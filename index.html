@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Felhasználói Adatok</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; margin-top: 5px; width: 300px; }
+    button { margin-top: 15px; padding: 8px 15px; }
+    .adatok { margin-top: 30px; }
+    .adatok p { margin: 5px 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Felhasználói adatok megadása</h1>
+
+  <form id="adatForm">
+    <label>Név: <input type="text" id="nev" /></label>
+    <label>Település: <input type="text" id="telepules" /></label>
+    <label>Irányítószám: <input type="text" id="iranyitoszam" /></label>
+    <label>Közterület: <input type="text" id="kozterulet" /></label>
+    <label>Házszám: <input type="text" id="hazszam" /></label>
+    <button type="submit">Mentés</button>
+  </form>
+
+  <div class="adatok">
+    <h2>Mentett adatok:</h2>
+    <p><strong>Név:</strong> <span id="kiNev">-</span></p>
+    <p><strong>Település:</strong> <span id="kiTelepules">-</span></p>
+    <p><strong>Irányítószám:</strong> <span id="kiIranyitoszam">-</span></p>
+    <p><strong>Közterület:</strong> <span id="kiKozterulet">-</span></p>
+    <p><strong>Házszám:</strong> <span id="kiHazszam">-</span></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("adatForm");
+    function megjelenites() {
+      const adatok = JSON.parse(localStorage.getItem("felhasznaloAdatok"));
+
+      document.getElementById("kiNev").textContent = adatok?.nev || "-";
+      document.getElementById("kiTelepules").textContent = adatok?.telepules || "-";
+      document.getElementById("kiIranyitoszam").textContent = adatok?.iranyitoszam || "-";
+      document.getElementById("kiKozterulet").textContent = adatok?.kozterulet || "-";
+      document.getElementById("kiHazszam").textContent = adatok?.hazszam || "-";
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const adatok = {
+        nev: document.getElementById("nev").value.trim(),
+        telepules: document.getElementById("telepules").value.trim(),
+        iranyitoszam: document.getElementById("iranyitoszam").value.trim(),
+        kozterulet: document.getElementById("kozterulet").value.trim(),
+        hazszam: document.getElementById("hazszam").value.trim()
+      };
+
+      localStorage.setItem("felhasznaloAdatok", JSON.stringify(adatok));
+      megjelenites();
+      form.reset();
+    });
+    window.addEventListener("load", megjelenites);
+  </script>
+
+</body>
+</html>
